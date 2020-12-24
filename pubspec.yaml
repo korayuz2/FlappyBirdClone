@@ -48,8 +48,6 @@ flutter:
   assets:
     - lib/images/flappy.png
     - lib/images/bulut.png
-    - lib/images/berkay.png
-    - lib/images/ucak.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

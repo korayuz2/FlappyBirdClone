@@ -46,37 +46,3 @@ class GameOverDart extends StatelessWidget {
     );
   }
 }
-
-/*AlertDialog(
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text("S C O R E"),
-                  Text("aaaa"),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Center(child: Text('T R Y A G A I N')),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeDart()));
-                },
-              ),
-            ],
-          ),*/
-
-/*Scaffold(
-      appBar: AppBar(
-        title: Text("G A M E O V E R"),
-      ),
-      body: FlatButton(
-        child: Text("try again"),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeDart()));
-        },
-      ),
-    );*/
