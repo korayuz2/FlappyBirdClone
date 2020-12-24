@@ -19,7 +19,7 @@ class GameOverDart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text(
-                  "YANDIN ",
+                  "G A M E  O V E R ",
                   style: TextStyle(fontSize: 30),
                 ),
                 SizedBox(

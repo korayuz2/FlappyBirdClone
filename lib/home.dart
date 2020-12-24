@@ -217,7 +217,7 @@ class _HomeDartState extends State<HomeDart> {
                     child: oyunbasladimi
                         ? Text(" ")
                         : Text(
-                            "O Y N A M A K  İ Ç İ N   T I K L A",
+                            "T A P  T O  P L A Y ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
                                 color: Colors.blue[800],
