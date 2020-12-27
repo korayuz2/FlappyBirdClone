@@ -33,9 +33,142 @@ class _HomeDartState extends State<HomeDart> {
   double duvaravurma = 0;
   int rnd;
   int sayac = 0;
-  int score = 0;
+  int bestScore = 0;
+  bool bestscoremu = false;
+  void bestscorevoid() {
+    setState(() {
+      if (bestScore < sayac) {
+        bestScore = sayac;
+        bestscoremu = true;
+      }
+    });
+  }
+
+  // değerleri sıfırlayalım
+  void restart() {
+    setState(() {
+      ucuskontrol = 0;
+      time = 0;
+      yukseklik = 0;
+      sonyukseklik = 0;
+      hiz = 3;
+
+      bulutbir = -1.5;
+      bulutiki = 2;
+      bulutuc = 3.85;
+      bulutdort = 7.25;
+      boruyerleskesi = 1;
+      boruyerleskesiiki = 3;
+      borualt1 = 110.0;
+      boruust1 = 500.0 - 130.0 - borualt1;
+      borualt2 = 210.0;
+      boruust2 = 500.0 - 130.0 - borualt2;
+
+      duvaravurma = 0;
+      sayac = 0;
+    });
+  }
+
+  void gameover(zaman) {
+    bestscorevoid();
+    zaman.cancel();
+    oyunbasladimi = false;
+    showDialog(
+        barrierDismissible:
+            false, //ekranın herhangi bir yerine basınca kapanmasın diye
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  bestscoremu
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "B",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.red[700]),
+                            ),
+                            Text(
+                              "E",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.deepPurple[700]),
+                            ),
+                            Text(
+                              "S",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.amber[700]),
+                            ),
+                            Text(
+                              "T",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.greenAccent[700]),
+                            ),
+                            Text(
+                              "  ",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.red[700]),
+                            ),
+                            Text(
+                              "S",
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.orangeAccent[700]),
+                            ),
+                            Text(
+                              "C",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.pinkAccent[400]),
+                            ),
+                            Text(
+                              "O",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.teal[700]),
+                            ),
+                            Text(
+                              "R",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.limeAccent[900]),
+                            ),
+                            Text(
+                              "E",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.purple[900]),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          "G A M E  O V E R ",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    "$sayac",
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              FlatButton(
+                child: Text("try again"),
+                onPressed: () {
+                  restart();
+                  Navigator.of(context).pop(); //pencereyi kapatmak için
+                },
+              )
+            ],
+          );
+        });
+  }
 
   void zipzip() {
+    bestscoremu = false;
     time = 0;
     sonyukseklik = ucuskontrol;
   }
@@ -58,20 +191,12 @@ class _HomeDartState extends State<HomeDart> {
       duvaravurma = ucuskontrol;
       duvaravurma = -duvaravurma + 1;
       duvaravurma = duvaravurma * 250;
-      print(duvaravurma);
 
       if (boruyerleskesi < 0.3) {
         if (boruyerleskesi > -0.2) {
           if ((duvaravurma <= (borualt1 - 25) ||
               duvaravurma >= borualt1 + 175)) {
-            zaman.cancel();
-            oyunbasladimi = false;
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GameOverDart(
-                          sayacgame: sayac,
-                        )));
+            gameover(zaman);
           }
         }
       }
@@ -84,14 +209,7 @@ class _HomeDartState extends State<HomeDart> {
       if (boruyerleskesiiki < 0.3) {
         if (boruyerleskesiiki > -0.2) {
           if (duvaravurma <= (borualt2 - 25) || duvaravurma >= borualt2 + 175) {
-            zaman.cancel();
-            oyunbasladimi = false;
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GameOverDart(
-                          sayacgame: sayac,
-                        )));
+            gameover(zaman);
           }
         }
       }
@@ -127,14 +245,7 @@ class _HomeDartState extends State<HomeDart> {
         bulutdort += 7;
       }
       if (ucuskontrol > 1.3) {
-        zaman.cancel();
-        oyunbasladimi = false;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GameOverDart(
-                      sayacgame: sayac,
-                    )));
+        gameover(zaman);
       }
     });
   }
@@ -217,7 +328,7 @@ class _HomeDartState extends State<HomeDart> {
                     child: oyunbasladimi
                         ? Text(" ")
                         : Text(
-                            "T A P  T O  P L A Y ",
+                            "T A P  T O   P L A Y ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
                                 color: Colors.blue[800],
@@ -237,24 +348,57 @@ class _HomeDartState extends State<HomeDart> {
                 child: Container(
                   color: Colors.brown,
                   child: Center(
-                    child: Column(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "SCORE",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "SCORE",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "$sayac",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "$sayac",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "BEST SCORE",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "$bestScore",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
